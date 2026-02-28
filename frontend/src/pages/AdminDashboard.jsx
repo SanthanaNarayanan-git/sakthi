@@ -106,7 +106,7 @@ const AdminDashboard = () => {
     const fetchUsers = async () => {
         setLoadingUsers(true);
         try {
-            const response = await axios.get("http://localhost:5000/api/users");
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users`);
             setUsers(response.data);
         } catch (error) {
             setNotification({ show: true, type: 'error', message: 'Failed to load users' });
@@ -117,7 +117,7 @@ const AdminDashboard = () => {
     const handleAddUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/api/users/add", newUser);
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/users/add`, newUser);
             setNotification({ show: true, type: 'success', message: 'User added successfully!' });
             setIsAddModalOpen(false);
             setNewUser({ username: "", password: "", role: "" });
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
     const handleUpdateUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:5000/api/users/${editUser.id}`, {
+            await axios.put(`${process.env.REACT_APP_API_URL}/api/users/${editUser.id}`, {
                 username: editUser.username,
                 role: editUser.role,
             });
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
     const handleDeleteUser = async (userId) => {
         if (!window.confirm("Are you sure you want to delete this user? This cannot be undone.")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/users/${userId}`);
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/users/${userId}`);
             setNotification({ show: true, type: 'success', message: 'User deleted successfully!' });
             fetchUsers();
         } catch (error) {
@@ -215,7 +215,7 @@ const AdminDashboard = () => {
             }
 
             if (pdfModal.selectedForm.id === '4m-change') {
-                window.open(`http://localhost:5000/api/4m-change/report?fromDate=${dateRange.from}&toDate=${dateRange.to}`, "_blank");
+                window.open(`${process.env.REACT_APP_API_URL}/api/4m-change/report?fromDate=${dateRange.from}&toDate=${dateRange.to}`, "_blank");
                 setNotification({ show: true, type: 'success', message: 'Report generated in new tab!' });
                 setPdfModal({ show: false, selectedForm: null });
                 setLoading(false);
@@ -223,19 +223,19 @@ const AdminDashboard = () => {
             }
 
             // CLIENT-SIDE PDFS
-            let apiRoute = `http://localhost:5000/api/reports/${pdfModal.selectedForm.id}`;
+            let apiRoute = `${process.env.REACT_APP_API_URL}/api/reports/${pdfModal.selectedForm.id}`;
             if (pdfModal.selectedForm.id === 'disa-setting-adjustment') {
-                apiRoute = `http://localhost:5000/api/disa/records`; 
+                apiRoute = `${process.env.REACT_APP_API_URL}/api/disa/records`; 
             } else if (pdfModal.selectedForm.id === 'error-proof') {
-                apiRoute = `http://localhost:5000/api/error-proof/bulk-data`; 
+                apiRoute = `${process.env.REACT_APP_API_URL}/api/error-proof/bulk-data`; 
             } else if (pdfModal.selectedForm.id === 'unpoured-mould-details') {
-                apiRoute = `http://localhost:5000/api/unpoured-moulds/bulk-data`;
+                apiRoute = `${process.env.REACT_APP_API_URL}/api/unpoured-moulds/bulk-data`;
             } else if (pdfModal.selectedForm.id === 'dmm-setting-parameters') {
-                apiRoute = `http://localhost:5000/api/dmm-settings/bulk-data`;
+                apiRoute = `${process.env.REACT_APP_API_URL}/api/dmm-settings/bulk-data`;
             } else if (pdfModal.selectedForm.id === 'disa-operator') {
-                apiRoute = `http://localhost:5000/api/disa-checklist/bulk-data`; 
+                apiRoute = `${process.env.REACT_APP_API_URL}/api/disa-checklist/bulk-data`; 
             } else if (pdfModal.selectedForm.id === 'lpa') {
-                apiRoute = `http://localhost:5000/api/bottom-level-audit/bulk-data`; // 🔥 Added LPA bulk route
+                apiRoute = `${process.env.REACT_APP_API_URL}/api/bottom-level-audit/bulk-data`; // 🔥 Added LPA bulk route
             }
 
             const res = await axios.get(apiRoute, {

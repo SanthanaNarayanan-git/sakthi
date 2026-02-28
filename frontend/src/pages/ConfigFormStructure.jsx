@@ -50,7 +50,7 @@ const ConfigFormStructure = () => {
     const [checkpoints, setCheckpoints] = useState([]);
     const [formTitle, setFormTitle] = useState("");
 
-    const API_BASE = `http://localhost:5000/api/config/${formId}`;
+    const API_BASE = `${process.env.REACT_APP_API_URL}/api/config/${formId}`;
 
     useEffect(() => {
         fetchConfig();

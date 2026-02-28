@@ -138,7 +138,7 @@ const DisamaticProductReport = () => {
     const checkOnLoad = async () => {
       if (formData.disa && formData.date && formData.shift) {
         try {
-          const res = await axios.get(`http://localhost:5000/api/forms/last-personnel`, {
+          const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/forms/last-personnel`, {
             params: { disa: formData.disa, date: formData.date, shift: formData.shift }
           });
           if (res.data) {
@@ -151,7 +151,7 @@ const DisamaticProductReport = () => {
             }));
           }
 
-          const counterRes = await axios.get(`http://localhost:5000/api/forms/last-mould-counter`, {
+          const counterRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/forms/last-mould-counter`, {
             params: { disa: formData.disa }
           });
           setPreviousMouldCounter(Number(counterRes.data.lastMouldCounter) || 0);
@@ -165,12 +165,12 @@ const DisamaticProductReport = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/delays").then((res) => setDelaysMaster(res.data));
-    axios.get("http://localhost:5000/api/incharges").then((res) => setIncharges(res.data));
-    axios.get("http://localhost:5000/api/employees").then((res) => setEmployees(res.data));
-    axios.get("http://localhost:5000/api/operators").then((res) => setOperators(res.data));
-    axios.get("http://localhost:5000/api/components").then((res) => setComponents(res.data));
-    axios.get("http://localhost:5000/api/supervisors").then((res) => setSupervisors(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/delays`).then((res) => setDelaysMaster(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/incharges`).then((res) => setIncharges(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/employees`).then((res) => setEmployees(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/operators`).then((res) => setOperators(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/components`).then((res) => setComponents(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/supervisors`).then((res) => setSupervisors(res.data));
   }, []);
 
   const handleChange = (e) => {
@@ -189,7 +189,7 @@ const DisamaticProductReport = () => {
 
     if (selectedDisa) {
       try {
-        const res = await axios.get(`http://localhost:5000/api/forms/last-personnel`, {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/forms/last-personnel`, {
           params: { disa: selectedDisa, date: formData.date, shift: formData.shift }
         });
         
@@ -206,7 +206,7 @@ const DisamaticProductReport = () => {
           toast.info(`First entry for DISA-${selectedDisa} in this shift.`);
         }
 
-        const counterRes = await axios.get(`http://localhost:5000/api/forms/last-mould-counter`, {
+        const counterRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/forms/last-mould-counter`, {
           params: { disa: selectedDisa }
         });
         const fetchedCounter = Number(counterRes.data.lastMouldCounter) || 0;
@@ -326,7 +326,7 @@ const DisamaticProductReport = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/forms", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/forms`, {
         ...formData, productions, delays, nextShiftPlans, mouldHardness, patternTemps,
       });
 
@@ -364,7 +364,7 @@ const DisamaticProductReport = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/forms/download-pdf", { responseType: "blob" });
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/forms/download-pdf`, { responseType: "blob" });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;

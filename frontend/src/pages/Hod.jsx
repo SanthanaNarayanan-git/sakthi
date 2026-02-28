@@ -35,7 +35,7 @@ const Hod = () => {
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const currentHOD = storedUser.username || "hod_user";
 
-  const DAILY_API_BASE = 'http://localhost:5000/api/daily-performance'; // 🔥 NEW API BASE
+  const DAILY_API_BASE = `${process.env.REACT_APP_API_URL}/api/daily-performance`; // 🔥 NEW API BASE
 
   useEffect(() => {
     fetchReports();
@@ -51,7 +51,7 @@ const Hod = () => {
   // ===============================================
   const fetchReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/disa-checklist/hod/${currentHOD}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/disa-checklist/hod/${currentHOD}`);
       setReports(res.data);
     } catch (err) { toast.error("Failed to load Disa Machine reports."); }
   };
@@ -66,8 +66,8 @@ const Hod = () => {
       const disaMachine = report.disa;
 
       const [detailsRes, monthlyRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/disa-checklist/details', { params: { date: dateStr, disaMachine } }),
-          axios.get('http://localhost:5000/api/disa-checklist/monthly-report', { params: { month, year, disaMachine } })
+          axios.get(`${process.env.REACT_APP_API_URL}/api/disa-checklist/details`, { params: { date: dateStr, disaMachine } }),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/disa-checklist/monthly-report`, { params: { month, year, disaMachine } })
       ]);
 
       const checklist = detailsRes.data.checklist; const monthlyLogs = monthlyRes.data.monthlyLogs || []; const ncReports = monthlyRes.data.ncReports || [];
@@ -168,7 +168,7 @@ const Hod = () => {
     if (sigCanvas.current.isEmpty()) { toast.warning("Please provide a signature first."); return; }
     const signatureData = sigCanvas.current.getCanvas().toDataURL("image/png");
     try {
-      await axios.post("http://localhost:5000/api/disa-checklist/sign", { date: selectedReport.reportDate, disaMachine: selectedReport.disa, signature: signatureData });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/disa-checklist/sign`, { date: selectedReport.reportDate, disaMachine: selectedReport.disa, signature: signatureData });
       toast.success("Checklist approved and signed!"); setSelectedReport(null); fetchReports(); 
     } catch (err) { toast.error("Failed to save signature."); }
   };
@@ -178,7 +178,7 @@ const Hod = () => {
   // ===============================================
   const fetchFourMReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/4m-change/hod/${currentHOD}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/hod/${currentHOD}`);
       setFourMReports(res.data);
     } catch (err) { toast.error("Failed to load 4M Change Reports."); }
   };
@@ -187,7 +187,7 @@ const Hod = () => {
     setSelectedFourMReport(report); setFourMPdfUrl(null); setIsFourMPdfLoading(true); setIsFourMPdfMaximized(false);
 
     try {
-      const response = await axios.get(`http://localhost:5000/api/4m-change/report`, { 
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/report`, { 
           params: { reportId: report.id },
           responseType: 'blob' 
       });
@@ -202,7 +202,7 @@ const Hod = () => {
     const signatureData = fourMSigCanvas.current.getCanvas().toDataURL("image/png");
 
     try {
-      await axios.post(`http://localhost:5000/api/4m-change/sign-hod`, { 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/4m-change/sign-hod`, { 
           reportId: selectedFourMReport.id, signature: signatureData 
       });
       toast.success("4M Change Report signed by HOD!");

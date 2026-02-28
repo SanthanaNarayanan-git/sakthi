@@ -1,6 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-require("./db"); 
+require("./db");
 
 const authRoutes = require("./routes/auth");
 const disaRoutes = require("./routes/disaSetting");
@@ -27,7 +28,7 @@ app.use("/api/disa", disaRoutes);
 
 // CHANGE HERE: Mapped to "/api" instead of "/api/product" 
 // so that /api/forms works as expected by the frontend
-app.use("/api", productRoutes); 
+app.use("/api", productRoutes);
 app.use('/api/disa-checklist', disaChecklistRoutes);
 
 app.use("/api/4m-change", fourMChangeRoutes);
@@ -40,6 +41,7 @@ app.use("/api/users", userRoutes);
 app.use("/api", dailyPerformanceRoutes);
 app.use("/api/config", configRoutes);
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

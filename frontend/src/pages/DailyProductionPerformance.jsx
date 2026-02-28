@@ -96,12 +96,12 @@ const DailyProductionPerformance = () => {
 
   useEffect(() => {
     // Fetch Component Codes
-    axios.get("http://localhost:5000/api/components")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/components`)
       .then((res) => setComponents(res.data))
       .catch((err) => console.error("Failed to fetch components", err));
 
     // 🔥 NEW: Fetch segregated users from the new endpoint
-    axios.get("http://localhost:5000/api/daily-performance/users")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/daily-performance/users`)
       .then((res) => {
         setIncharges(res.data.incharges || []);
         setHofs(res.data.hofs || []);
@@ -128,7 +128,7 @@ const DailyProductionPerformance = () => {
       }
       
       try {
-        const sumRes = await axios.get(`http://localhost:5000/api/daily-performance/summary?date=${productionDate}&disa=${disa}`);
+        const sumRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/daily-performance/summary?date=${productionDate}&disa=${disa}`);
         const fetchedData = sumRes.data;
         
         setSummary((prev) => {
@@ -149,7 +149,7 @@ const DailyProductionPerformance = () => {
           return newSummary;
         });
 
-        const delayRes = await axios.get(`http://localhost:5000/api/daily-performance/delays?date=${productionDate}&disa=${disa}`);
+        const delayRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/daily-performance/delays?date=${productionDate}&disa=${disa}`);
         setDelays(delayRes.data);
 
       } catch (err) {
@@ -255,7 +255,7 @@ const DailyProductionPerformance = () => {
     };
 
     try {
-        await axios.post("http://localhost:5000/api/daily-performance", payload);
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/daily-performance`, payload);
         toast.success("Report saved successfully!");
         
         setSummary({
@@ -283,7 +283,7 @@ const DailyProductionPerformance = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:5000/api/daily-performance/download-pdf", { 
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/daily-performance/download-pdf`, { 
         params: { date: productionDate, disa: disa },
         responseType: "blob" 
       });

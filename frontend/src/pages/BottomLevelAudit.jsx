@@ -67,7 +67,7 @@ const BottomLevelAudit = () => {
   const [modalItem, setModalItem] = useState(null);
   const [ncForm, setNcForm] = useState({ ncDetails: '', correction: '', rootCause: '', correctiveAction: '', targetDate: new Date().toISOString().split('T')[0], responsibility: '', sign: '', status: 'Pending' });
 
-  const API_BASE = 'http://localhost:5000/api/bottom-level-audit';
+  const API_BASE = `${process.env.REACT_APP_API_URL}/api/bottom-level-audit`;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchData(); }, [headerData.date, headerData.disaMachine]); 

@@ -48,7 +48,7 @@ const ConfigUnpouredMould = ({ onBack }) => {
     // Config State
     const [items, setItems] = useState([]);
 
-    const API_BASE = `http://localhost:5000/api/config/unpoured-mould-details`;
+    const API_BASE = `${process.env.REACT_APP_API_URL}/api/config/unpoured-mould-details`;
 
     useEffect(() => {
         fetchConfig();

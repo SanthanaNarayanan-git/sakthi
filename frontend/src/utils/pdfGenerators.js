@@ -28,7 +28,7 @@ export const generateUnPouredMouldPDF = async (data, dateRange) => {
 
     let customCols = [];
     try {
-        const configRes = await fetch('http://localhost:5000/api/config/unpoured-mould-details/master');
+        const configRes = await fetch(`${process.env.REACT_APP_API_URL}/api/config/unpoured-mould-details/master`);
         const configData = await configRes.json();
         customCols = (configData.config || []).map(c => ({
             key: `custom_${c.id}`, id: c.id, label: c.reasonName.toUpperCase().replace(' ', '\n'), group: c.department.toUpperCase(), isCustom: true
@@ -140,7 +140,7 @@ export const generateDmmSettingPDF = async (data, dateRange) => {
 
     let customCols = [];
     try {
-        const configRes = await fetch('http://localhost:5000/api/config/dmm-setting-parameters/master');
+        const configRes = await fetch(`${process.env.REACT_APP_API_URL}/api/config/dmm-setting-parameters/master`);
         const configData = await configRes.json();
         customCols = (configData.config || []).map(c => ({
             key: `custom_${c.id}`, id: c.id, label: c.columnLabel.replace('\\n', '\n'), isCustom: true

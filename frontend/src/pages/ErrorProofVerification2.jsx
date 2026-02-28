@@ -63,7 +63,7 @@ const ErrorProofVerification2 = () => {
   const fetchData = async () => {
     try {
       // 🔥 FIXED: Pointing to /api/error-proof2
-      const res = await axios.get('http://localhost:5000/api/error-proof2/details', { params: { machine: headerData.disaMachine } });
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/error-proof2/details`, { params: { machine: headerData.disaMachine } });
       
       setHofList(res.data.hofs || []);
       setOperatorList(res.data.operators || []);
@@ -123,7 +123,7 @@ const ErrorProofVerification2 = () => {
     try {
       const plansToSave = reactionPlans.map((p, i) => ({ ...p, SNo: i + 1 }));
       // 🔥 FIXED: Pointing to /api/error-proof2
-      await axios.post('http://localhost:5000/api/error-proof2/save', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/error-proof2/save`, {
         machine: headerData.disaMachine, verifications, reactionPlans: plansToSave, operatorSignature: signatureData,
         headerDetails: { reviewedBy: headerData.reviewedBy, approvedBy: headerData.approvedBy, assignedHOF: headerData.assignedHOF }
       });

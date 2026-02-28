@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Save, Plus, Trash2, ArrowLeft, Loader, Settings, AlertTriangle, CheckCircle, Lock, RotateCcw } from 'lucide-react';
 
-const API_BASE = `http://localhost:5000/api/disa/custom-columns`;
+const API_BASE = `${process.env.REACT_APP_API_URL}/api/disa/custom-columns`;
 
 const NotificationToast = ({ data, onClose }) => {
     const isError = data.type === 'error';

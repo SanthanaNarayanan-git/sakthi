@@ -43,10 +43,10 @@ const Hof = () => {
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const currentHOF = storedUser.username || "hof_user";
 
-  const API_BASE = 'http://localhost:5000/api/bottom-level-audit';
-  const ERR_API_BASE = 'http://localhost:5000/api/error-proof';
-  const ERR_API_BASE_V2 = 'http://localhost:5000/api/error-proof2'; 
-  const DAILY_API_BASE = 'http://localhost:5000/api/daily-performance'; // 🔥 NEW API BASE
+  const API_BASE = `${process.env.REACT_APP_API_URL}/api/bottom-level-audit`;
+  const ERR_API_BASE = `${process.env.REACT_APP_API_URL}/api/error-proof`;
+  const ERR_API_BASE_V2 = `${process.env.REACT_APP_API_URL}/api/error-proof2`; 
+  const DAILY_API_BASE = `${process.env.REACT_APP_API_URL}/api/daily-performance`; // 🔥 NEW API BASE
 
   useEffect(() => {
     fetchReports();

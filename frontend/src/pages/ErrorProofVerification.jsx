@@ -88,10 +88,10 @@ const ErrorProofVerification = () => {
 
   const fetchInitialData = async () => {
     try {
-      const snoRes = await axios.get("http://localhost:5000/api/error-proof/next-sno");
+      const snoRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/error-proof/next-sno`);
       setSNo(snoRes.data.nextSNo);
 
-      const inchargeRes = await axios.get("http://localhost:5000/api/error-proof/incharges");
+      const inchargeRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/error-proof/incharges`);
       // 🔥 Extract arrays properly from updated backend
       setOperatorList(inchargeRes.data.operators || []);
       setSupervisorList(inchargeRes.data.supervisors || []);
@@ -121,14 +121,14 @@ const ErrorProofVerification = () => {
         const proof = defaultErrorProofs[index];
         const obsResult = observations[index];
 
-        await axios.post("http://localhost:5000/api/error-proof/add-verification", {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/error-proof/add-verification`, {
           line: proof.line, errorProofName: proof.name, natureOfErrorProof: proof.nature, frequency: proof.frequency,
           recordDate, shift: "Daily", observationResult: obsResult, verifiedBy, reviewedBy: reviewedByMain,
           operatorSignature: signatureData, assignedHOF: assignedHOF
         });
 
         if (obsResult === "NOT_OK") {
-          await axios.post("http://localhost:5000/api/error-proof/add-reaction", {
+          await axios.post(`${process.env.REACT_APP_API_URL}/api/error-proof/add-reaction`, {
             sNo, errorProofNo, errorProofName: proof.name, recordDate, shift: "Daily",
             problem, rootCause, correctiveAction, status, reviewedBy: reviewedByReaction, approvedBy, remarks
           });
@@ -148,7 +148,7 @@ const ErrorProofVerification = () => {
 
   const handleGenerateReport = () => { 
     const targetLine = encodeURIComponent(defaultErrorProofs[0].line);
-    window.open(`http://localhost:5000/api/error-proof/report?line=${targetLine}`, "_blank"); 
+    window.open(`${process.env.REACT_APP_API_URL}/api/error-proof/report?line=${targetLine}`, "_blank"); 
   };
 
   return (

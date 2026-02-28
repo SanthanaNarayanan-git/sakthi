@@ -26,7 +26,7 @@ const AddUser = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/users/add", formData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/add`, formData);
       toast.success(`User ${formData.username} added successfully!`);
       
       setFormData({ username: "", password: "", role: "operator" });

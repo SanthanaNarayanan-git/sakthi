@@ -62,7 +62,7 @@ const FourMChangeMonitoring = () => {
 
   useEffect(() => {
     // Fetch Incharges & HODs
-    axios.get("http://localhost:5000/api/4m-change/incharges")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/incharges`)
       .then((res) => {
         setInchargeList(res.data.supervisors);
         setHodList(res.data.hods);
@@ -70,7 +70,7 @@ const FourMChangeMonitoring = () => {
       .catch((err) => console.error("Error fetching incharges:", err));
 
     // Fetch 4M Types
-    axios.get("http://localhost:5000/api/4m-change/types")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/types`)
       .then((res) => {
         setFourMOptions(res.data);
         if (res.data.length > 0) setType4M(res.data[0].typeName);
@@ -78,7 +78,7 @@ const FourMChangeMonitoring = () => {
       .catch((err) => console.error("Error fetching 4M types:", err));
 
     // Fetch Custom Columns
-    axios.get("http://localhost:5000/api/4m-change/custom-columns")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/custom-columns`)
       .then((res) => {
         setCustomColumns(res.data);
         const initialVals = {};
@@ -107,7 +107,7 @@ const FourMChangeMonitoring = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/4m-change/add", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/4m-change/add`, {
         line, partName, recordDate, shift, mcNo, type4M, description,
         firstPart, lastPart, inspFreq, retroChecking, quarantine,
         partId, internalComm, inchargeSign, assignedHOD,
@@ -134,7 +134,7 @@ const FourMChangeMonitoring = () => {
 
   const handleGenerateReport = () => {
     // 🔥 FILTER BY TODAY'S DATE FOR THE OPERATOR PREVIEW
-    window.open(`http://localhost:5000/api/4m-change/report?fromDate=${recordDate}&toDate=${recordDate}`, "_blank");
+    window.open(`${process.env.REACT_APP_API_URL}/api/4m-change/report?fromDate=${recordDate}&toDate=${recordDate}`, "_blank");
   };
 
   const StatusSelect = ({ value, onChange, options = ["-", "OK", "Not OK"] }) => (

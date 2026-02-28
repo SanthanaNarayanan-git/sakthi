@@ -84,7 +84,7 @@ const DmmSettingParameters = () => {
     setLoading(true);
     try {
       // 1. Fetch Admin Custom Columns
-      const configRes = await axios.get('http://localhost:5000/api/config/dmm-setting-parameters/master');
+      const configRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/config/dmm-setting-parameters/master`);
       const customCols = (configRes.data.config || []).map(c => ({
           key: `custom_${c.id}`, id: c.id, label: c.columnLabel.replace('\\n', '\n'), 
           inputType: c.inputType, width: c.columnWidth, isCustom: true
@@ -93,7 +93,7 @@ const DmmSettingParameters = () => {
       setAllColumns(mergedColumns);
 
       // 2. Fetch Shift Data
-      const res = await axios.get('http://localhost:5000/api/dmm-settings/details', { 
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/dmm-settings/details`, { 
           params: { date: headerData.date, disa: headerData.disaMachine } 
       });
       
@@ -152,7 +152,7 @@ const DmmSettingParameters = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/dmm-settings/save', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/dmm-settings/save`, {
         date: headerData.date, disa: headerData.disaMachine, shiftsData, shiftsMeta
       });
       setNotification({ show: true, type: 'success', message: 'Parameters Assigned to Supervisor Successfully!' });

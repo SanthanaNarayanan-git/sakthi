@@ -7,7 +7,7 @@ const ConfigDisaChecklist = ({ onBack }) => {
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
-    const API_BASE = `http://localhost:5000/api/config/disa-operator`;
+    const API_BASE = `${process.env.REACT_APP_API_URL}/api/config/disa-operator`;
 
     useEffect(() => { fetchConfig(); }, []);
 

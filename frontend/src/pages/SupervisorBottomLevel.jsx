@@ -19,7 +19,7 @@ const SupervisorBottomLevel = () => {
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const currentSupervisor = storedUser.username || "supervisor1";
 
-  const API_BASE = 'http://localhost:5000/api/bottom-level-audit';
+  const API_BASE = `${process.env.REACT_APP_API_URL}/api/bottom-level-audit`;
 
   useEffect(() => {
     fetchReports();

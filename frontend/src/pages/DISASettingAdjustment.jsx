@@ -37,7 +37,7 @@ const DISASettingAdjustment = () => {
   useEffect(() => {
     // Fetch last mould count
     axios
-      .get("http://localhost:5000/api/disa/last-mould-count")
+      .get(`${process.env.REACT_APP_API_URL}/api/disa/last-mould-count`)
       .then((res) => {
         setPrevMouldCountNo(res.data.prevMouldCountNo);
       })
@@ -45,7 +45,7 @@ const DISASettingAdjustment = () => {
 
     // 🔥 NEW: Fetch custom dynamic columns added by Admin
     axios
-      .get("http://localhost:5000/api/disa/custom-columns")
+      .get(`${process.env.REACT_APP_API_URL}/api/disa/custom-columns`)
       .then((res) => {
         setCustomColumns(res.data || []);
       })
@@ -118,7 +118,7 @@ const DISASettingAdjustment = () => {
     const signatureData = sigCanvas.current.getCanvas().toDataURL('image/png');
 
     try {
-      await axios.post("http://localhost:5000/api/disa/add", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/disa/add`, {
         recordDate,
         mouldCountNo: Number(mouldCountNo),
         prevMouldCountNo,
@@ -147,7 +147,7 @@ const DISASettingAdjustment = () => {
   };
 
   const handleGenerateReport = () => {
-    window.open("http://localhost:5000/api/disa/report", "_blank");
+    window.open(`${process.env.REACT_APP_API_URL}/api/disa/report`, "_blank");
   };
 
   return (

@@ -48,7 +48,7 @@ const ConfigDisaSettingAdjustment = () => {
     // Config State
     const [parameters, setParameters] = useState([]);
 
-    const API_BASE = `http://localhost:5000/api/config/disa-setting-adjustment/master`;
+    const API_BASE = `${process.env.REACT_APP_API_URL}/api/config/disa-setting-adjustment/master`;
 
     useEffect(() => {
         fetchConfig();

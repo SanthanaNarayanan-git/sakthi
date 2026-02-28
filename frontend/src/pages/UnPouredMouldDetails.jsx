@@ -77,7 +77,7 @@ const UnPouredMouldDetails = () => {
     setLoading(true);
     try {
       // 1. Fetch Dynamic Master Columns
-      const configRes = await axios.get('http://localhost:5000/api/config/unpoured-mould-details/master');
+      const configRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/config/unpoured-mould-details/master`);
       const customCols = (configRes.data.config || []).map(c => ({
           key: `custom_${c.id}`, 
           id: c.id, 
@@ -90,7 +90,7 @@ const UnPouredMouldDetails = () => {
       setAllColumns(mergedColumns);
 
       // 2. Fetch Shift Data
-      const res = await axios.get('http://localhost:5000/api/unpoured-moulds/details', { 
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/unpoured-moulds/details`, { 
           params: { date: headerData.date, disa: headerData.disaMachine } 
       });
       
@@ -169,7 +169,7 @@ const UnPouredMouldDetails = () => {
     });
 
     try {
-      await axios.post('http://localhost:5000/api/unpoured-moulds/save', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/unpoured-moulds/save`, {
         date: headerData.date, disa: headerData.disaMachine, shiftsData: payloadData
       });
       setNotification({ show: true, type: 'success', message: 'Data Saved Successfully!' });

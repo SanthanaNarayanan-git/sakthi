@@ -67,7 +67,7 @@ const Supervisor = () => {
   // ==========================================
   const fetchDisaReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/forms/supervisor/${currentSupervisor}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/forms/supervisor/${currentSupervisor}`);
       setDisaReports(res.data);
     } catch (err) { toast.error("Failed to load Disamatic reports."); }
   };
@@ -76,7 +76,7 @@ const Supervisor = () => {
     if (disaSigCanvas.current.isEmpty()) { toast.warning("Please provide a signature."); return; }
     const signatureData = disaSigCanvas.current.getCanvas().toDataURL("image/png");
     try {
-      await axios.post("http://localhost:5000/api/forms/sign", { reportId: selectedDisaReport.id, signature: signatureData });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/forms/sign`, { reportId: selectedDisaReport.id, signature: signatureData });
       toast.success("Disamatic Report signed successfully!");
       setSelectedDisaReport(null); fetchDisaReports();
     } catch (err) { toast.error("Failed to save signature."); }
@@ -87,7 +87,7 @@ const Supervisor = () => {
   // ==========================================
   const fetchBottomReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/bottom-level-audit/supervisor/${currentSupervisor}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/bottom-level-audit/supervisor/${currentSupervisor}`);
       setBottomReports(res.data);
     } catch (err) { toast.error("Failed to load Bottom Level Audits."); }
   };
@@ -103,8 +103,8 @@ const Supervisor = () => {
       const disaMachine = report.disa;
 
       const [detailsRes, monthlyRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/bottom-level-audit/details`, { params: { date: dateStr, disaMachine } }),
-        axios.get(`http://localhost:5000/api/bottom-level-audit/monthly-report`, { params: { month, year, disaMachine } })
+        axios.get(`${process.env.REACT_APP_API_URL}/api/bottom-level-audit/details`, { params: { date: dateStr, disaMachine } }),
+        axios.get(`${process.env.REACT_APP_API_URL}/api/bottom-level-audit/monthly-report`, { params: { month, year, disaMachine } })
       ]);
 
       const checklist = detailsRes.data.checklist; const monthlyLogs = monthlyRes.data.monthlyLogs || []; const ncReports = monthlyRes.data.ncReports || [];
@@ -188,7 +188,7 @@ const Supervisor = () => {
     const cleanDate = new Date(localDate.getTime() - (offset * 60 * 1000)).toISOString().split('T')[0];
 
     try {
-      await axios.post(`http://localhost:5000/api/bottom-level-audit/sign-supervisor`, { date: cleanDate, disaMachine: selectedBottomReport.disa, signature: signatureData });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/bottom-level-audit/sign-supervisor`, { date: cleanDate, disaMachine: selectedBottomReport.disa, signature: signatureData });
       toast.success("Bottom Level Audit approved!"); setSelectedBottomReport(null); fetchBottomReports();
     } catch (err) { toast.error("Failed to save signature."); }
   };
@@ -198,7 +198,7 @@ const Supervisor = () => {
   // ==========================================
   const fetchNcrReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/bottom-level-audit/supervisor-ncr/${currentSupervisor}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/bottom-level-audit/supervisor-ncr/${currentSupervisor}`);
       setNcrReports(res.data);
     } catch (err) { toast.error("Failed to load NCRs."); }
   };
@@ -207,7 +207,7 @@ const Supervisor = () => {
     if (ncrSigCanvas.current.isEmpty()) { toast.warning("Please provide your signature."); return; }
     const signatureData = ncrSigCanvas.current.getCanvas().toDataURL("image/png");
     try {
-      await axios.post(`http://localhost:5000/api/bottom-level-audit/sign-ncr`, { reportId: selectedNcrReport.ReportId, signature: signatureData });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/bottom-level-audit/sign-ncr`, { reportId: selectedNcrReport.ReportId, signature: signatureData });
       toast.success("NCR Verified and Completed!"); setSelectedNcrReport(null); fetchNcrReports(); 
     } catch (err) { toast.error("Failed to save NCR signature."); }
   };
@@ -217,7 +217,7 @@ const Supervisor = () => {
   // ==========================================
   const fetchDmmReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/dmm-settings/supervisor/${currentSupervisor}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/dmm-settings/supervisor/${currentSupervisor}`);
       setDmmReports(res.data);
     } catch (err) { toast.error("Failed to load DMM Settings."); }
   };
@@ -231,7 +231,7 @@ const Supervisor = () => {
       const dateStr = localDate.toISOString().split('T')[0];
       const disaMachine = report.disa;
 
-      const res = await axios.get(`http://localhost:5000/api/dmm-settings/details`, { params: { date: dateStr, disa: disaMachine } });
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/dmm-settings/details`, { params: { date: dateStr, disa: disaMachine } });
       const { shiftsData, shiftsMeta } = res.data;
 
       const doc = new jsPDF('l', 'mm', 'a4'); 
@@ -302,7 +302,7 @@ const Supervisor = () => {
     const cleanDate = new Date(localDate.getTime() - (offset * 60 * 1000)).toISOString().split('T')[0];
 
     try {
-      await axios.post(`http://localhost:5000/api/dmm-settings/sign`, { date: cleanDate, disaMachine: selectedDmmReport.disa, shift: selectedDmmReport.shift, signature: signatureData });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/dmm-settings/sign`, { date: cleanDate, disaMachine: selectedDmmReport.disa, shift: selectedDmmReport.shift, signature: signatureData });
       toast.success("DMM Settings Shift signed successfully!");
       setSelectedDmmReport(null); fetchDmmReports();
     } catch (err) { toast.error("Failed to save signature."); }
@@ -313,7 +313,7 @@ const Supervisor = () => {
   // ==========================================
   const fetchFourMReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/4m-change/supervisor/${currentSupervisor}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/supervisor/${currentSupervisor}`);
       setFourMReports(res.data);
     } catch (err) { toast.error("Failed to load 4M Change Reports."); }
   };
@@ -321,7 +321,7 @@ const Supervisor = () => {
   const handleOpenFourMModal = async (report) => {
     setSelectedFourMReport(report); setFourMPdfUrl(null); setIsFourMPdfLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/4m-change/report`, { params: { reportId: report.id }, responseType: 'blob' });
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/4m-change/report`, { params: { reportId: report.id }, responseType: 'blob' });
       const pdfBlobUrl = URL.createObjectURL(response.data);
       setFourMPdfUrl(pdfBlobUrl);
     } catch (error) { toast.error("Failed to generate 4M PDF."); }
@@ -332,7 +332,7 @@ const Supervisor = () => {
     if (fourMSigCanvas.current.isEmpty()) { toast.warning("Please provide your signature."); return; }
     const signatureData = fourMSigCanvas.current.getCanvas().toDataURL("image/png");
     try {
-      await axios.post(`http://localhost:5000/api/4m-change/sign-supervisor`, { reportId: selectedFourMReport.id, signature: signatureData });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/4m-change/sign-supervisor`, { reportId: selectedFourMReport.id, signature: signatureData });
       toast.success("4M Change Report signed successfully!");
       setSelectedFourMReport(null); fetchFourMReports();
     } catch (err) { toast.error("Failed to save 4M signature."); }
@@ -343,7 +343,7 @@ const Supervisor = () => {
   // ==========================================
   const fetchErrorReports = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/error-proof/supervisor/${currentSupervisor}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/error-proof/supervisor/${currentSupervisor}`);
       setErrorReports(res.data);
     } catch (err) { toast.error("Failed to load Error Proof plans."); }
   };
@@ -353,7 +353,7 @@ const Supervisor = () => {
     const signatureData = errorSigCanvas.current.getCanvas().toDataURL("image/png");
     try {
       const id = selectedErrorReport.VerificationId || selectedErrorReport.Id || selectedErrorReport.sNo;
-      await axios.post(`http://localhost:5000/api/error-proof/sign-supervisor`, { 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/error-proof/sign-supervisor`, { 
         verificationId: id, signature: signatureData 
       });
       toast.success("Reaction Plan Approved!");
@@ -537,7 +537,7 @@ const Supervisor = () => {
           </div>
           <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
             <div className="flex-1 h-full bg-[#525659] relative flex items-center justify-center">
-              <iframe src={`http://localhost:5000/api/forms/download-pdf?reportId=${selectedDisaReport.id}#toolbar=0&view=FitH`} className="w-full h-full border-none relative z-10" title="PDF" />
+              <iframe src={`${process.env.REACT_APP_API_URL}/api/forms/download-pdf?reportId=${selectedDisaReport.id}#toolbar=0&view=FitH`} className="w-full h-full border-none relative z-10" title="PDF" />
             </div>
             <div className="w-full lg:w-[400px] bg-gray-50 border-l border-gray-300 flex flex-col shrink-0 shadow-2xl z-10 overflow-y-auto">
               <div className="p-6 flex-1 flex flex-col">

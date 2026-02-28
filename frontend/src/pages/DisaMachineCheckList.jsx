@@ -79,7 +79,7 @@ const DisaMachineCheckList = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/disa-checklist/details', { 
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/disa-checklist/details`, { 
           params: { date: headerData.date, disaMachine: headerData.disaMachine } 
       });
       
@@ -156,7 +156,7 @@ const DisaMachineCheckList = () => {
   const submitReport = async () => {
     if (!ncForm.ncDetails || !ncForm.responsibility) return setNotification({ show: true, type: 'error', message: 'Details and Responsibility are mandatory.' });
     try {
-      await axios.post('http://localhost:5000/api/disa-checklist/report-nc', { 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/disa-checklist/report-nc`, { 
           checklistId: modalItem.MasterId, slNo: modalItem.SlNo, reportDate: headerData.date, disaMachine: headerData.disaMachine, ...ncForm 
       });
       setNotification({ show: true, type: 'success', message: 'Report Logged Successfully.' });
@@ -195,7 +195,7 @@ const DisaMachineCheckList = () => {
           MasterId: item.MasterId, IsDone: item.IsDone, IsHoliday: item.IsHoliday, IsVatCleaning: item.IsVatCleaning, ReadingValue: item.ReadingValue || ''
       }));
       
-      await axios.post('http://localhost:5000/api/disa-checklist/submit-batch', { 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/disa-checklist/submit-batch`, { 
           items: itemsToSave, 
           sign: headerData.operatorName || '', 
           operatorSignature: sigData,
@@ -223,7 +223,7 @@ const DisaMachineCheckList = () => {
       let ncReports = [];
       
       try {
-          const res = await axios.get('http://localhost:5000/api/disa-checklist/monthly-report', { 
+          const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/disa-checklist/monthly-report`, { 
               params: { month, year, disaMachine: headerData.disaMachine } 
           });
           monthlyLogs = res.data.monthlyLogs || [];

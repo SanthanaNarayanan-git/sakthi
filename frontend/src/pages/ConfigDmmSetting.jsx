@@ -47,7 +47,7 @@ const ConfigDmmSetting = ({ onBack }) => {
 
     const [items, setItems] = useState([]);
 
-    const API_BASE = `http://localhost:5000/api/config/dmm-setting-parameters`;
+    const API_BASE = `${process.env.REACT_APP_API_URL}/api/config/dmm-setting-parameters`;
 
     useEffect(() => {
         fetchConfig();
